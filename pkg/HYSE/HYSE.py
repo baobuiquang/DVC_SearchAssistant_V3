@@ -149,7 +149,7 @@ class HYSE_EngineSemantic:
         embs_queries = self.model.encode(new_queries)
         # -----
         similarities = embs_queries @ self.embs.T
-        best_matching_idxs = [[idx for idx, _ in sorted(enumerate(sim), key=lambda x: x[1], reverse=True)][:min(top, len(self.docs))] for sim in similarities]
+        best_matching_idxs = [[idx for idx, _ in sorted(enumerate(sim), key=lambda x: x[1], reverse=True)][:top] for sim in similarities]
         best_matching_docs = [[self.docs[idx] for idx in e] for e in best_matching_idxs]
         best_matching_similarities = [[similarities[i][idx] for idx in idxs] for i, idxs in enumerate(best_matching_idxs)]
         # -----
@@ -252,7 +252,7 @@ class HYSE_EngineHybrid:
         self.search_engine_2.update(new_docs)
         self.search_engine_3.update(new_docs)
         self.search_engine_4.update(new_docs)
-    def search(self, new_queries):
+    def search(self, new_queries, top=5):
         res_1 = self.search_engine_1.search(new_queries)
         res_2 = self.search_engine_2.search(new_queries)
         res_3 = self.search_engine_3.search(new_queries)
@@ -273,4 +273,4 @@ class HYSE_EngineHybrid:
             # ----------
             tmp_res = sorted(tmp_res, key=lambda x: (-x['score'], len(x['doc']))) # Sort by score (higher first), then sort by length (shorter first)
             res_search.append(tmp_res)
-        return res_search
+        return [e[:top] for e in res_search]
