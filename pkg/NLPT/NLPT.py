@@ -12,12 +12,18 @@ import re
 with open(HF_Download(repo_id="onelevelstudio/dataset", filename="nlp/diacritics_vi.txt"), mode="r", encoding="utf-8") as f:
     DATASET_diacritics_vi = f.read().splitlines()
 
-def Process_NLPT_Normalize(text):
+def NLPT_Normalize(text, lower=False, remove_diacritics=False, replace_spacelikes_with_1space=False):
     vi_diacritics, vi_diacritics_normalized = DATASET_diacritics_vi
     translation_table = str.maketrans(vi_diacritics, vi_diacritics_normalized)
-    text = text.translate(translation_table)             # 1. Remove Vietnamese diacritics
-    text = text.lower().strip()                          # 2. Lower + Strip
-    return text
+    # ----------
+    if replace_spacelikes_with_1space:
+        text = re.sub(r'\s+', ' ', text).strip()             # Replace consecutive spacelikes with single space
+    if remove_diacritics:
+        text = text.translate(translation_table)             # Remove Vietnamese diacritics
+    if lower:
+        text = text.lower()                                  # Lower
+    # ----------
+    return text.strip()
 
 # ====================================================================================================
 # ====================================== Process_NLPT_Tokenize =======================================
@@ -40,7 +46,7 @@ DATASET_VOCAB       = set(DATASET_vocab_vi + DATASET_vocab_en)
 DATASET_STOPWORDS   = set(DATASET_stopwords_vi + DATASET_stopwords_en)
 
 # Text -> ["token", "token"]
-def Process_NLPT_Tokenize(text):
+def NLPT_Tokenize(text):
     text = text.lower().strip()
     # tokens = re.findall(r'\w+|[^\w\s]', text)
     tokens = re.findall(r"\b\w+(?:'\w+)*(?:-\w+)*(?:\.\w+)*\b|[^\w\s]", text)
