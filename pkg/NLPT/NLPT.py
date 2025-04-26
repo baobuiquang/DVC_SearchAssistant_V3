@@ -14,8 +14,8 @@ with open(HF_Download(repo_id="onelevelstudio/dataset", filename="nlp/diacritics
 with open(HF_Download(repo_id="onelevelstudio/dataset", filename="nlp/punctuation.txt"), mode="r", encoding="utf-8") as f:
     DATASET_punctuation = f.read().splitlines()
 
-DATASET_diacritics_vi = set(DATASET_diacritics_vi)
-DATASET_punctuation = set(DATASET_punctuation)
+# DATASET_diacritics_vi = set(DATASET_diacritics_vi)
+# DATASET_punctuation = set(DATASET_punctuation)
 
 def NLPT_Normalize(text, lower=False, remove_diacritics=False, replace_spacelikes_with_1space=False, remove_punctuations=False):
     vi_diacritics, vi_diacritics_normalized = DATASET_diacritics_vi
@@ -23,7 +23,7 @@ def NLPT_Normalize(text, lower=False, remove_diacritics=False, replace_spacelike
     # ----------
     if remove_punctuations:
         for punc in DATASET_PUNCTUATION:
-            text = text.replace(punc, "")
+            text = text.replace(punc, "")                    # Remove punctuations
     if replace_spacelikes_with_1space:
         text = re.sub(r'\s+', ' ', text).strip()             # Replace consecutive spacelikes with single space
     if remove_diacritics:

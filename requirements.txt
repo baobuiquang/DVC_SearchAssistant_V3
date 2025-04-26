@@ -1,5 +1,5 @@
-ipywidgets
-ipykernel
+# ipywidgets
+# ipykernel
 
 gradio
 fastapi
