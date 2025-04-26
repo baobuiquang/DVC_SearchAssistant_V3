@@ -11,11 +11,19 @@ import re
 
 with open(HF_Download(repo_id="onelevelstudio/dataset", filename="nlp/diacritics_vi.txt"), mode="r", encoding="utf-8") as f:
     DATASET_diacritics_vi = f.read().splitlines()
+with open(HF_Download(repo_id="onelevelstudio/dataset", filename="nlp/punctuation.txt"), mode="r", encoding="utf-8") as f:
+    DATASET_punctuation = f.read().splitlines()
 
-def NLPT_Normalize(text, lower=False, remove_diacritics=False, replace_spacelikes_with_1space=False):
+DATASET_diacritics_vi = set(DATASET_diacritics_vi)
+DATASET_punctuation = set(DATASET_punctuation)
+
+def NLPT_Normalize(text, lower=False, remove_diacritics=False, replace_spacelikes_with_1space=False, remove_punctuations=False):
     vi_diacritics, vi_diacritics_normalized = DATASET_diacritics_vi
     translation_table = str.maketrans(vi_diacritics, vi_diacritics_normalized)
     # ----------
+    if remove_punctuations:
+        for punc in DATASET_PUNCTUATION:
+            text = text.replace(punc, "")
     if replace_spacelikes_with_1space:
         text = re.sub(r'\s+', ' ', text).strip()             # Replace consecutive spacelikes with single space
     if remove_diacritics:
