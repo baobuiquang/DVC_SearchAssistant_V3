@@ -104,9 +104,10 @@ textarea { font-size: 16px !important; }
 #gr_infopool { padding: 16px; }
 #gr_infopool * { color: hsl(0 0 20); }
 #gr_history .placeholder img { height: 32px; }
-button.example { padding: 6px 12px !important; }
+button.example { padding: 10px 14px !important; }
 button.example .example-content { justify-content: center !important; }
 button.example .example-text-content { margin-top: 0 !important; }
+button.example span.example-text { font-size: 13px !important; }
 """
 
 def fn_select_example(evt: gr.SelectData):
@@ -143,7 +144,7 @@ def fn_chat_2(gr_var_prompt, gr_history, gr_infopool):
             time.sleep(0.01)
             yield gr_history
 
-with gr.Blocks(title="DVC_SearchAssistant_V3", theme=theme, css=css, head=head, analytics_enabled=False, fill_height=True, fill_width=True) as demo:
+with gr.Blocks(title="Demo - DVC_SearchAssistant_V3", theme=theme, css=css, head=head, analytics_enabled=False, fill_height=True, fill_width=True) as demo:
     with gr.Row(elem_id="gr_row"):
         with gr.Column(min_width=1):
             gr_variable_1 = gr.Code(interactive=False, wrap_lines=True, label="gr_variable_1", elem_id="gr_variable_1")
