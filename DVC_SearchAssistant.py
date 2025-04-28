@@ -53,6 +53,12 @@ def preprocess_fieldtext_html_in_DATA(DATA):
         fld_text = re.sub(r'<strong[^>]*>(.*?)</strong>', r'\1', fld_text)   # Pre-processing: Remove <strong> tag (keep content)
         fld_text = re.sub(r'<span[^>]*>(.*?)</span>', r'\1', fld_text)       # Pre-processing: Remove <span> tag (keep content)
         fld_text = re.sub(r'<em[^>]*>(.*?)</em>', r'\1', fld_text)           # Pre-processing: Remove <em> tag (keep content)
+        fld_text = re.sub(r'<h1[^>]*>(.*?)</h1>', r'\1', fld_text)           # Pre-processing: Remove <h1> tag (keep content)
+        fld_text = re.sub(r'<h2[^>]*>(.*?)</h2>', r'\1', fld_text)           # Pre-processing: Remove <h2> tag (keep content)
+        fld_text = re.sub(r'<h3[^>]*>(.*?)</h4>', r'\1', fld_text)           # Pre-processing: Remove <h3> tag (keep content)
+        fld_text = re.sub(r'<h4[^>]*>(.*?)</h4>', r'\1', fld_text)           # Pre-processing: Remove <h4> tag (keep content)
+        fld_text = re.sub(r'<h5[^>]*>(.*?)</h5>', r'\1', fld_text)           # Pre-processing: Remove <h5> tag (keep content)
+        fld_text = re.sub(r'<h6[^>]*>(.*?)</h6>', r'\1', fld_text)           # Pre-processing: Remove <h6> tag (keep content)
         fld_text = re.sub(r'<i[^>]*>(.*?)</i>', r'\1', fld_text)             # Pre-processing: Remove <i> tag (keep content)
         fld_text = re.sub(r'<b[^>]*>(.*?)</b>', r'\1', fld_text)             # Pre-processing: Remove <b> tag (keep content)
         fld_text = re.sub(r'<a[^>]*>(.*?)</a>', r'\1', fld_text)             # Pre-processing: Remove <a> tag (keep content)
@@ -124,30 +130,38 @@ def create_api_content_data(bestthutuc):
     return content_data
 
 def create_api_content_0(bestthutuc):
+    SELECTED_FIELDS = [
+        "Thành phần hồ sơ", 
+        "Trình tự thực hiện", 
+        "Cách thức thực hiện", 
+        "Thời gian giải quyết", "Thời hạn giải quyết",
+        "Phí, lệ phí", "Phí", "Lệ Phí",
+        # "Kết quả", "Kết quả thực hiện",
+    ]
     MAXWORDS = 100
     XEMCHITIET = f"""... <a href='{bestthutuc['link']}' target='_blank'>(xem chi tiết ↗)</a>"""
-    fieldnames = list(bestthutuc["content"].keys())
     content_0 = ""
     content_0 += f"""<a href='{bestthutuc['link']}' target='_blank'><h2>Thủ tục: {bestthutuc['name']}</h2></a>"""
-    for fld in fieldnames:
-        # ----------
-        bestthutuc_content_fld = bestthutuc["content"][fld]
-        # ----------
-        content_0 += f"""<h3>{fld}</h3>"""
-        content_0 += "<p>"
-        if len(bestthutuc_content_fld.split(" ")) < MAXWORDS:
-            content_0 += f"""{bestthutuc_content_fld}"""
-        else:
-            content_0 += f"""{" ".join(bestthutuc_content_fld.split(" ")[:MAXWORDS])}"""
-            # ----- # Gradio fix for trimmed text
-            if "<ul>" in bestthutuc_content_fld:    content_0 += "</ul>"
-            if "<ol>" in bestthutuc_content_fld:    content_0 += "</ol>"
-            if "<table>" in bestthutuc_content_fld: content_0 += "</td></tr></tbody></table>"
+    for fld in SELECTED_FIELDS:
+        if fld in list(bestthutuc["content"].keys()):
+            # ----------
+            bestthutuc_content_fld = bestthutuc["content"][fld]
+            # ----------
+            content_0 += f"""<h3>{fld}</h3>"""
+            content_0 += "<p>"
+            if len(bestthutuc_content_fld.split(" ")) < MAXWORDS:
+                content_0 += f"""{bestthutuc_content_fld}"""
+            else:
+                content_0 += f"""{" ".join(bestthutuc_content_fld.split(" ")[:MAXWORDS])}"""
+                # ----- # Gradio fix for trimmed text
+                if "<ul>" in bestthutuc_content_fld:    content_0 += "</ul>"
+                if "<ol>" in bestthutuc_content_fld:    content_0 += "</ol>"
+                if "<table>" in bestthutuc_content_fld: content_0 += "</td></tr></tbody></table>"
+                # -----
+                content_0 += XEMCHITIET
+            content_0 += "</p>"
             # -----
-            content_0 += XEMCHITIET
-        content_0 += "</p>"
-        # -----
-    content_0 += f"""<h3>Xem đầy đủ văn bản thủ tục tại:</h3>"""
+    content_0 += f"""<h3>Xem văn bản đầy đủ tại:</h3>"""
     content_0 += f"""<a href='{bestthutuc['link']}' target='_blank'>{bestthutuc['link']}</a>"""
     return content_0
 
