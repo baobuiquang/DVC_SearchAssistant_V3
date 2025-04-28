@@ -5,12 +5,41 @@ from pydantic import BaseModel
 from fastapi import FastAPI
 import uvicorn
 
-app = FastAPI()
-app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_credentials=True, allow_methods=["*"], allow_headers=["*"])
+# ==================================================================================================== 🏓 Ping to server to confirm alive
+# ====================================================================================================
+# ====================================================================================================
 
-# ==================================================================================================== API
+from contextlib import asynccontextmanager
+import requests
+import asyncio
+async def ping_to_server_to_confirm_alive():
+    while True:
+        try:
+            r = requests.post("https://pims.lamdongtructuyen.vn/hub/api/ServiceHistory/SaveLog", json={"LastCode":200,"Url":"","Token":"OKFGFwXXnCYu9P5zpA3iX4v6roKEh6GU"})
+            print(f"> 🏓 Ping to server to confirm alive! - DVC_TTHC_LamDong: {r.text}")
+            r = requests.post("https://pims.lamdongtructuyen.vn/hub/api/ServiceHistory/SaveLog", json={"LastCode":200,"Url":"","Token":"uIMtpx3TjutUijfEanqh4s1C9Nhj5cSI"})
+            print(f"> 🏓 Ping to server to confirm alive! - DVC_TTHC_LangSon: {r.text}")
+        except Exception as er:
+            print(f"⚠️ DVC_SearchAssistant > 🏓 > Error: {er}")
+        await asyncio.sleep(600)  # in seconds (600 seconds = 10 minutes)
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Startup
+    task = asyncio.create_task(ping_to_server_to_confirm_alive())
+    yield
+    # Shutdown (optional: cancel background task)
+    task.cancel()
+    try:
+        await task
+    except asyncio.CancelledError:
+        print("⚠️ DVC_SearchAssistant > 🏓 > asyncio.CancelledError")
+
+# ==================================================================================================== ⚡ API
 # ====================================================================================================
 # ====================================================================================================
+
+app = FastAPI(lifespan=lifespan)
+app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_credentials=True, allow_methods=["*"], allow_headers=["*"])
 
 GLOBAL_AUTHENKEY = "VNPT"
 
@@ -18,6 +47,11 @@ class SearchAssistantPlayload(BaseModel):
     authen_key : str = "VNPT"
     datapool: str = "DVC_TTHC_LamDong"
     input: str = "Tôi muốn thành lập công ty thì cần phải làm gì?"
+
+# ENDPOINT: /
+@app.get("/", include_in_schema=False)
+async def endpoint_root():
+    return {"message": "API is running..."}
 
 # ENDPOINT: /api
 @app.post("/api", tags=["Main API Endpoint"])
@@ -31,7 +65,7 @@ async def endpoint_api(playload:SearchAssistantPlayload):
             # --------------------------------------------------
         except Exception as e: return {"message": f"⚠️ Error: {e}"}
 
-# ==================================================================================================== DEMO APP
+# ==================================================================================================== 📱 DEMO APP
 # ====================================================================================================
 # ====================================================================================================
 
