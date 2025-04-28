@@ -47,11 +47,33 @@ Lưu ý quan trọng: Nếu không có thủ tục nào liên quan, trả về "
 """
     return prompt_1
 
+def preprocess_fieldtext_html_in_DATA(DATA):
+    def preprocess_fieldtext_html(fld_text):
+        fld_text = fld_text.replace("<br/>", "")                             # Pre-processing: Remove all <br/>
+        fld_text = re.sub(r'<strong[^>]*>(.*?)</strong>', r'\1', fld_text)   # Pre-processing: Remove <strong> tag (keep content)
+        fld_text = re.sub(r'<span[^>]*>(.*?)</span>', r'\1', fld_text)       # Pre-processing: Remove <span> tag (keep content)
+        fld_text = re.sub(r'<em[^>]*>(.*?)</em>', r'\1', fld_text)           # Pre-processing: Remove <em> tag (keep content)
+        fld_text = re.sub(r'<i[^>]*>(.*?)</i>', r'\1', fld_text)             # Pre-processing: Remove <i> tag (keep content)
+        fld_text = re.sub(r'<b[^>]*>(.*?)</b>', r'\1', fld_text)             # Pre-processing: Remove <b> tag (keep content)
+        fld_text = re.sub(r'<a[^>]*>(.*?)</a>', r'\1', fld_text)             # Pre-processing: Remove <a> tag (keep content)
+        fld_text = re.sub(r'<u[^>]*>(.*?)</u>', r'\1', fld_text)             # Pre-processing: Remove <u> tag (keep content)
+        fld_text = re.sub(r"\s*class=['\"][^'\"]*['\"]", '', fld_text)       # Pre-processing: Remove class="something"
+        fld_text = re.sub(r"\s*style=['\"][^'\"]*['\"]", '', fld_text)       # Pre-processing: Remove style="something"
+        return fld_text
+    for infopool_id in list(DATA.keys()):
+        for iii, thutuc in enumerate(DATA[infopool_id]["data"]):
+            fieldnames = list(thutuc["content"].keys())
+            for fld in fieldnames:
+                DATA[infopool_id]["data"][iii]["content"][fld] = preprocess_fieldtext_html(thutuc["content"][fld])
+    return DATA
+
 # ====================================================================================================
 # ====================================================================================================
 # ====================================================================================================
 
+# Read DATA
 DATA = json2dict("static/DATA.json")
+DATA = preprocess_fieldtext_html_in_DATA(DATA)
 
 INFOPOOL_DATAS = {}
 INFOPOOL_HYSE_ENGINES = {}
@@ -102,13 +124,31 @@ def create_api_content_data(bestthutuc):
     return content_data
 
 def create_api_content_0(bestthutuc):
+    MAXWORDS = 100
+    XEMCHITIET = f"""... <a href='{bestthutuc['link']}' target='_blank'>(xem chi tiết ↗)</a>"""
     fieldnames = list(bestthutuc["content"].keys())
     content_0 = ""
+    content_0 += f"""<a href='{bestthutuc['link']}' target='_blank'><h2>Thủ tục: {bestthutuc['name']}</h2></a>"""
     for fld in fieldnames:
+        # ----------
+        bestthutuc_content_fld = bestthutuc["content"][fld]
+        # ----------
         content_0 += f"""<h3>{fld}</h3>"""
-        content_0 += "\n"
-        content_0 += f"""{bestthutuc["content"][fld]}"""
-        content_0 += "\n"
+        content_0 += "<p>"
+        if len(bestthutuc_content_fld.split(" ")) < MAXWORDS:
+            content_0 += f"""{bestthutuc_content_fld}"""
+        else:
+            content_0 += f"""{" ".join(bestthutuc_content_fld.split(" ")[:MAXWORDS])}"""
+            # ----- # Gradio fix for trimmed text
+            if "<ul>" in bestthutuc_content_fld:    content_0 += "</ul>"
+            if "<ol>" in bestthutuc_content_fld:    content_0 += "</ol>"
+            if "<table>" in bestthutuc_content_fld: content_0 += "</td></tr></tbody></table>"
+            # -----
+            content_0 += XEMCHITIET
+        content_0 += "</p>"
+        # -----
+    content_0 += f"""<h3>Xem đầy đủ văn bản thủ tục tại:</h3>"""
+    content_0 += f"""<a href='{bestthutuc['link']}' target='_blank'>{bestthutuc['link']}</a>"""
     return content_0
 
 # ====================================================================================================
@@ -116,20 +156,36 @@ def create_api_content_0(bestthutuc):
 # ====================================================================================================
 
 def DVC_SearchAssistant(inputtext, infopool_id):
-    bestthutuc, suggestions = find_bestthutuc_and_suggestions(inputtext, infopool_id)
-    API_OBJECT = {
-        "input": inputtext,
-        "datapool": infopool_id,
-        "name": bestthutuc["name"],
-        "link": bestthutuc["link"],
-        "code": bestthutuc["code"],
-        "content_0": create_api_content_0(bestthutuc),
-        "content_1": "",
-        "content_2": "",
-        "content_data": create_api_content_data(bestthutuc),
-        "suggestions": suggestions,
-    }
-    return API_OBJECT
+    try:
+        bestthutuc, suggestions = find_bestthutuc_and_suggestions(inputtext, infopool_id)
+        API_OBJECT = {
+            "input": inputtext,
+            "datapool": infopool_id,
+            "name": bestthutuc["name"],
+            "link": bestthutuc["link"],
+            "code": bestthutuc["code"],
+            "content_0": create_api_content_0(bestthutuc),
+            "content_1": "DO-NOT-USE-THIS",
+            "content_2": "DO-NOT-USE-THIS",
+            "content_data": create_api_content_data(bestthutuc),
+            "suggestions": suggestions,
+        }
+        return API_OBJECT
+    except:
+        API_OBJECT = {
+            "input": inputtext,
+            "datapool": infopool_id,
+            "name": "",
+            "link": "",
+            "code": "",
+            "content_0": "Xin chào, mình có thể giúp gì cho bạn?",
+            "content_1": "DO-NOT-USE-THIS",
+            "content_2": "DO-NOT-USE-THIS",
+            "content_data": {},
+            "suggestions": [],
+        }
+        return API_OBJECT
+
 
 # inputtext = "tôi muốn cưới chồng người nước ngoài"
 # infopool_id = "DVC_TTHC_LamDong"
