@@ -2,6 +2,8 @@ from pkg.HYSE.HYSE import HYSE_EngineHybrid, json2dict, dict2json
 from pkg.NLPT.NLPT import NLPT_Normalize
 from pkg.LLM.LLM import Process_LLM
 
+from static.DATA_HARDCODE import DATA_HARDCODE
+
 import numpy as np
 import json
 import re
@@ -16,6 +18,23 @@ def print_dict(d, indent=4):
 def print_list(l):
     for e in l:
         print(e)
+
+# CONVERT: ['hướng dẫn', 'hồ sơ']
+# TO:      ['hướng dẫn', 'hướng dan', 'huong dẫn', 'huong dan', 'hồ sơ', 'hồ so', 'ho sơ', 'ho so']
+def create_normalied_list_of_text(myls):
+    def combine_lists_with_spaces(list1, list2):
+        result = []
+        def backtrack(index=0, current=""):
+            if index == len(list1):
+                result.append(current.strip()) 
+                return
+            sep = " " if index < len(list1) - 1 else ""
+            backtrack(index + 1, current + list1[index] + sep)
+            backtrack(index + 1, current + list2[index] + sep)
+        backtrack()
+        return result
+    res = [item for sublist in [combine_lists_with_spaces(ele.split(), [NLPT_Normalize(el, lower=True, remove_diacritics=True, replace_spacelikes_with_1space=True, remove_punctuations=True) for el in ele.split()]) for ele in myls] for item in sublist]
+    return res
 
 def create_prompt_1(inputtext, hyse_res):
     prompt_list_1 = [{"Tên thủ tục": e['doc'], "INDEX": str(e['index'])} for e in hyse_res]
@@ -130,7 +149,75 @@ def create_api_content_data(bestthutuc):
     return content_data
 
 def create_api_content_0(bestthutuc):
-    SELECTED_FIELDS = [
+    OPINIONATED_FIELD_TRIGGERS = [
+        {
+            "triggers": ['thành phần hồ sơ', 'thành phần', 'hồ sơ'],
+            "fieldnames": ['Thành phần hồ sơ']
+        },
+        {
+            "triggers": ['cách thức thực hiện', 'cách thức', 'thực hiện'],
+            "fieldnames": ['Cách thức thực hiện']
+        },
+        {
+            "triggers": ['trình tự thực hiện', 'trình tự', 'thực hiện'],
+            "fieldnames": ['Trình tự thực hiện']
+        },
+        {
+            "triggers": ['thời gian giải quyết', 'thời hạn giải quyết', 'thời gian', 'thời hạn'],
+            "fieldnames": ['Thời gian giải quyết', 'Thời hạn giải quyết']
+        },
+        {
+            "triggers": ['yêu cầu - điều kiện', 'yêu cầu, điều kiện', 'yêu cầu', 'điều kiện'],
+            "fieldnames": ['Yêu cầu - điều kiện', 'Yêu cầu, điều kiện']
+        },
+        {
+            "triggers": ['đối tượng thực hiện', 'đối tượng', 'thực hiện'],
+            "fieldnames": ['Đối tượng thực hiện']
+        },
+        {
+            "triggers": ['căn cứ pháp lý', 'căn cứ', 'pháp lý'],
+            "fieldnames": ['Căn cứ pháp lý']
+        },
+        {
+            "triggers": ['biểu mẫu đính kèm', 'tên mẫu đơn, tờ khai', 'biểu mẫu', 'mẫu đơn', 'tờ khai'],
+            "fieldnames": ['Biểu mẫu đính kèm', 'Tên mẫu đơn, tờ khai']
+        },
+        {
+            "triggers": ['phí, lệ phí', 'lệ phí', 'chi phí'],
+            "fieldnames": ['Phí, lệ phí', 'Lệ Phí', 'Phí']
+        },
+        {
+            "triggers": ['lĩnh vực'],
+            "fieldnames": ['Lĩnh vực']
+        },
+        {
+            "triggers": ['cơ quan thực hiện', 'thực hiện'],
+            "fieldnames": ['Cơ quan thực hiện']
+        },
+        {
+            "triggers": ['kết quả thực hiện', 'kết quả', 'thực hiện'],
+            "fieldnames": ['Kết quả thực hiện', 'Kết quả']
+        },
+        {
+            "triggers": ['địa chỉ tiếp nhận', 'nơi tiếp nhận', 'tiếp nhận'],
+            "fieldnames": ['Địa chỉ tiếp nhận']
+        },
+        {
+            "triggers": ['số lượng bộ hồ sơ', 'số lượng', 'hồ sơ'],
+            "fieldnames": ['Số lượng bộ hồ sơ']
+        },
+    ]
+    # TODO: 🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌
+    # TODO: 🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌
+    # TODO: 🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌
+    # TODO: 🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌
+    # TODO: 🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌
+    # Filter fields by trigger in user's input -> content_0
+    # Should have a flag to know if there is a trigger or not (so trim the fieldcontent or not)
+    # If there is trigger -> replace the default OPINIONATED_SELECTED_FIELDS
+
+    # ----------------------------------------------------------------------------------------------------
+    OPINIONATED_SELECTED_FIELDS = [
         "Thành phần hồ sơ", 
         "Trình tự thực hiện", 
         "Cách thức thực hiện", 
@@ -142,7 +229,7 @@ def create_api_content_0(bestthutuc):
     XEMCHITIET = f"""... <a href='{bestthutuc['link']}' target='_blank'>(xem chi tiết ↗)</a>"""
     content_0 = ""
     content_0 += f"""<a href='{bestthutuc['link']}' target='_blank'><h2>Thủ tục: {bestthutuc['name']}</h2></a>"""
-    for fld in SELECTED_FIELDS:
+    for fld in OPINIONATED_SELECTED_FIELDS:
         if fld in list(bestthutuc["content"].keys()):
             # ----------
             bestthutuc_content_fld = bestthutuc["content"][fld]
@@ -170,35 +257,49 @@ def create_api_content_0(bestthutuc):
 # ====================================================================================================
 
 def DVC_SearchAssistant(inputtext, infopool_id):
+    API_OBJECT = {
+        "input": inputtext,
+        "datapool": infopool_id,
+        "name": "",
+        "link": "",
+        "code": "",
+        "content_0": "Xin chào, mình có thể giúp gì cho bạn?",
+        "content_1": "DO-NOT-USE-THIS",
+        "content_2": "DO-NOT-USE-THIS",
+        "content_data": {},
+        "suggestions": [],
+    }
+    # --------------------------------------------------
+    def inputtext_preprocessing(inputtext):
+        return NLPT_Normalize(inputtext, replace_spacelikes_with_1space=True) # 🍌 Opinionated inputtext pre-processing
+    inputtext = inputtext_preprocessing(inputtext)
+    # -------------------------------------------------- 1️⃣ Special Case 1: inputtext is empty
+    if inputtext == "":
+        return API_OBJECT
+    # -------------------------------------------------- 2️⃣ Special Case 2: inputtext is DATA_HARDCODE
+    for faq in DATA_HARDCODE[infopool_id]:
+        possible_faq_questions = create_normalied_list_of_text(faq["questions"])
+        for e in possible_faq_questions:
+            if e.lower() in inputtext.lower():
+                API_OBJECT = faq["answer"]
+                API_OBJECT["input"] = inputtext
+                return API_OBJECT
+    # -------------------------------------------------- 3️⃣ Case 3: inputtext is normal search text -> LLM
     try:
         bestthutuc, suggestions = find_bestthutuc_and_suggestions(inputtext, infopool_id)
-        API_OBJECT = {
-            "input": inputtext,
-            "datapool": infopool_id,
-            "name": bestthutuc["name"],
-            "link": bestthutuc["link"],
-            "code": bestthutuc["code"],
-            "content_0": create_api_content_0(bestthutuc),
-            "content_1": "DO-NOT-USE-THIS",
-            "content_2": "DO-NOT-USE-THIS",
-            "content_data": create_api_content_data(bestthutuc),
-            "suggestions": suggestions,
-        }
+        API_OBJECT["name"] = bestthutuc["name"]
+        API_OBJECT["link"] = bestthutuc["link"]
+        API_OBJECT["code"] = bestthutuc["code"]
+        API_OBJECT["content_0"] = create_api_content_0(bestthutuc)
+        API_OBJECT["content_1"] = "DO-NOT-USE-THIS"
+        API_OBJECT["content_2"] = "DO-NOT-USE-THIS"
+        API_OBJECT["content_data"] = create_api_content_data(bestthutuc)
+        API_OBJECT["suggestions"] = suggestions
         return API_OBJECT
-    except:
-        API_OBJECT = {
-            "input": inputtext,
-            "datapool": infopool_id,
-            "name": "",
-            "link": "",
-            "code": "",
-            "content_0": "Xin chào, mình có thể giúp gì cho bạn?",
-            "content_1": "DO-NOT-USE-THIS",
-            "content_2": "DO-NOT-USE-THIS",
-            "content_data": {},
-            "suggestions": [],
-        }
-        return API_OBJECT
+    except Exception as er:
+        print(f"⚠️ DVC_SearchAssistant > Error: {er}")
+    # --------------------------------------------------
+    return API_OBJECT
 
 
 # inputtext = "tôi muốn cưới chồng người nước ngoài"
