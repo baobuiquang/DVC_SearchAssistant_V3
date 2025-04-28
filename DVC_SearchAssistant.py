@@ -148,88 +148,51 @@ def create_api_content_data(bestthutuc):
         content_data[fld2] = bestthutuc["content"][fld1]
     return content_data
 
-def create_api_content_0(bestthutuc):
+def create_api_content_0(inputtext, bestthutuc):
     OPINIONATED_FIELD_TRIGGERS = [
-        {
-            "triggers": ['thành phần hồ sơ', 'thành phần', 'hồ sơ'],
-            "fieldnames": ['Thành phần hồ sơ']
-        },
-        {
-            "triggers": ['cách thức thực hiện', 'cách thức', 'thực hiện'],
-            "fieldnames": ['Cách thức thực hiện']
-        },
-        {
-            "triggers": ['trình tự thực hiện', 'trình tự', 'thực hiện'],
-            "fieldnames": ['Trình tự thực hiện']
-        },
-        {
-            "triggers": ['thời gian giải quyết', 'thời hạn giải quyết', 'thời gian', 'thời hạn'],
-            "fieldnames": ['Thời gian giải quyết', 'Thời hạn giải quyết']
-        },
-        {
-            "triggers": ['yêu cầu - điều kiện', 'yêu cầu, điều kiện', 'yêu cầu', 'điều kiện'],
-            "fieldnames": ['Yêu cầu - điều kiện', 'Yêu cầu, điều kiện']
-        },
-        {
-            "triggers": ['đối tượng thực hiện', 'đối tượng', 'thực hiện'],
-            "fieldnames": ['Đối tượng thực hiện']
-        },
-        {
-            "triggers": ['căn cứ pháp lý', 'căn cứ', 'pháp lý'],
-            "fieldnames": ['Căn cứ pháp lý']
-        },
-        {
-            "triggers": ['biểu mẫu đính kèm', 'tên mẫu đơn, tờ khai', 'biểu mẫu', 'mẫu đơn', 'tờ khai'],
-            "fieldnames": ['Biểu mẫu đính kèm', 'Tên mẫu đơn, tờ khai']
-        },
-        {
-            "triggers": ['phí, lệ phí', 'lệ phí', 'chi phí'],
-            "fieldnames": ['Phí, lệ phí', 'Lệ Phí', 'Phí']
-        },
-        {
-            "triggers": ['lĩnh vực'],
-            "fieldnames": ['Lĩnh vực']
-        },
-        {
-            "triggers": ['cơ quan thực hiện', 'thực hiện'],
-            "fieldnames": ['Cơ quan thực hiện']
-        },
-        {
-            "triggers": ['kết quả thực hiện', 'kết quả', 'thực hiện'],
-            "fieldnames": ['Kết quả thực hiện', 'Kết quả']
-        },
-        {
-            "triggers": ['địa chỉ tiếp nhận', 'nơi tiếp nhận', 'tiếp nhận'],
-            "fieldnames": ['Địa chỉ tiếp nhận']
-        },
-        {
-            "triggers": ['số lượng bộ hồ sơ', 'số lượng', 'hồ sơ'],
-            "fieldnames": ['Số lượng bộ hồ sơ']
-        },
+        { "fieldnames": ['Thành phần hồ sơ'], "triggers": ['thành phần hồ sơ', 'thành phần', 'hồ sơ'] },
+        { "fieldnames": ['Cách thức thực hiện'], "triggers": ['cách thức thực hiện', 'cách thức', 'thực hiện'] },
+        { "fieldnames": ['Trình tự thực hiện'], "triggers": ['trình tự thực hiện', 'trình tự', 'thực hiện'] },
+        { "fieldnames": ['Thời gian giải quyết', 'Thời hạn giải quyết'], "triggers": ['thời gian giải quyết', 'thời hạn giải quyết', 'thời gian', 'thời hạn'] },
+        { "fieldnames": ['Yêu cầu - điều kiện', 'Yêu cầu, điều kiện'], "triggers": ['yêu cầu - điều kiện', 'yêu cầu, điều kiện', 'yêu cầu', 'điều kiện'] },
+        { "fieldnames": ['Đối tượng thực hiện'], "triggers": ['đối tượng thực hiện', 'đối tượng', 'thực hiện'] },
+        { "fieldnames": ['Căn cứ pháp lý'], "triggers": ['căn cứ pháp lý', 'căn cứ', 'pháp lý'] },
+        { "fieldnames": ['Biểu mẫu đính kèm', 'Tên mẫu đơn, tờ khai'], "triggers": ['biểu mẫu đính kèm', 'tên mẫu đơn, tờ khai', 'biểu mẫu', 'mẫu đơn', 'tờ khai'] },
+        { "fieldnames": ['Phí, lệ phí', 'Lệ Phí', 'Phí'], "triggers": ['phí, lệ phí', 'lệ phí', 'chi phí'] },
+        { "fieldnames": ['Lĩnh vực'], "triggers": ['lĩnh vực'] },
+        { "fieldnames": ['Cơ quan thực hiện'], "triggers": ['cơ quan thực hiện', 'thực hiện'] },
+        { "fieldnames": ['Kết quả thực hiện', 'Kết quả'], "triggers": ['kết quả thực hiện', 'kết quả', 'thực hiện'] },
+        { "fieldnames": ['Địa chỉ tiếp nhận'], "triggers": ['địa chỉ tiếp nhận', 'nơi tiếp nhận', 'tiếp nhận'] },
+        { "fieldnames": ['Số lượng bộ hồ sơ'], "triggers": ['số lượng bộ hồ sơ', 'số lượng', 'hồ sơ'] },
     ]
-    # TODO: 🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌
-    # TODO: 🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌
-    # TODO: 🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌
-    # TODO: 🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌
-    # TODO: 🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌🍌
-    # Filter fields by trigger in user's input -> content_0
-    # Should have a flag to know if there is a trigger or not (so trim the fieldcontent or not)
-    # If there is trigger -> replace the default OPINIONATED_SELECTED_FIELDS
-
+    flag_there_is_trigger = False
+    TRIGGERED_FIELDS = []
+    for ee in OPINIONATED_FIELD_TRIGGERS:
+        for trigger in create_normalied_list_of_text(ee["triggers"]):
+            if trigger.lower() in inputtext.lower():
+                for fld in ee["fieldnames"]:
+                    if fld in list(bestthutuc["content"].keys()):
+                        TRIGGERED_FIELDS.append(fld)
+                flag_there_is_trigger = True
+                break
     # ----------------------------------------------------------------------------------------------------
-    OPINIONATED_SELECTED_FIELDS = [
-        "Thành phần hồ sơ", 
-        "Trình tự thực hiện", 
-        "Cách thức thực hiện", 
-        "Thời gian giải quyết", "Thời hạn giải quyết",
-        "Phí, lệ phí", "Phí", "Lệ Phí",
-        # "Kết quả", "Kết quả thực hiện",
-    ]
-    MAXWORDS = 100
+    if flag_there_is_trigger:
+        MAXWORDS = 9999
+        SELECTED_FIELDS = TRIGGERED_FIELDS
+    else:
+        MAXWORDS = 100
+        SELECTED_FIELDS = [
+            "Thành phần hồ sơ", 
+            "Trình tự thực hiện", 
+            "Cách thức thực hiện", 
+            "Thời gian giải quyết", "Thời hạn giải quyết",
+            "Phí, lệ phí", "Phí", "Lệ Phí",
+            # "Kết quả", "Kết quả thực hiện",
+        ]
     XEMCHITIET = f"""... <a href='{bestthutuc['link']}' target='_blank'>(xem chi tiết ↗)</a>"""
     content_0 = ""
     content_0 += f"""<a href='{bestthutuc['link']}' target='_blank'><h2>Thủ tục: {bestthutuc['name']}</h2></a>"""
-    for fld in OPINIONATED_SELECTED_FIELDS:
+    for fld in SELECTED_FIELDS:
         if fld in list(bestthutuc["content"].keys()):
             # ----------
             bestthutuc_content_fld = bestthutuc["content"][fld]
@@ -290,7 +253,7 @@ def DVC_SearchAssistant(inputtext, infopool_id):
         API_OBJECT["name"] = bestthutuc["name"]
         API_OBJECT["link"] = bestthutuc["link"]
         API_OBJECT["code"] = bestthutuc["code"]
-        API_OBJECT["content_0"] = create_api_content_0(bestthutuc)
+        API_OBJECT["content_0"] = create_api_content_0(inputtext, bestthutuc)
         API_OBJECT["content_1"] = "DO-NOT-USE-THIS"
         API_OBJECT["content_2"] = "DO-NOT-USE-THIS"
         API_OBJECT["content_data"] = create_api_content_data(bestthutuc)
