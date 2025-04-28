@@ -1,0 +1,13 @@
+# ipywidgets
+# ipykernel
+
+gradio
+fastapi
+uvicorn
+requests
+
+rank-bm25
+tokenizers
+onnxruntime
+
+# pyinstaller
