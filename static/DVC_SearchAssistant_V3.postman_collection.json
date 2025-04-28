@@ -1,0 +1,72 @@
+{
+	"info": {
+		"_postman_id": "0d25f6d0-049c-4d80-a279-507f586d9f4d",
+		"name": "DVC_SearchAssistant_V3",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "43366618"
+	},
+	"item": [
+		{
+			"name": "SERVER:5005",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"authen_key\": \"VNPT\",\r\n    \"datapool\": \"DVC_TTHC_LangSon\", // \"datapool\": \"DVC_TTHC_LamDong\",\r\n    \"input\": \"Thành lập doanh nghiệp tư nhân cần thủ tục nào?\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://192.168.20.60:5005/api",
+					"protocol": "http",
+					"host": [
+						"192",
+						"168",
+						"20",
+						"60"
+					],
+					"port": "5005",
+					"path": [
+						"api"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "LOCAL (Dev)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"authen_key\": \"VNPT\",\r\n    \"datapool\": \"DVC_TTHC_LangSon\", // \"datapool\": \"DVC_TTHC_LamDong\",\r\n    \"input\": \"Thành lập doanh nghiệp tư nhân cần thủ tục nào?\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5005/api",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5005",
+					"path": [
+						"api"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
