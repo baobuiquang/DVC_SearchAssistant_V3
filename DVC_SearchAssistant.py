@@ -5,8 +5,23 @@ from pkg.LLM.LLM import Process_LLM
 from static.DATA_HARDCODE import DATA_HARDCODE
 
 import numpy as np
+import logging
 import json
 import re
+import os
+
+os.makedirs("_log", exist_ok=True)
+file_handler = logging.FileHandler('_log/log.txt', encoding='utf-8')
+logging.basicConfig(
+    handlers=[file_handler],
+    level=logging.INFO,
+    format='%(asctime)s | %(message)s',
+    datefmt='%y%m%d%H%M%S'
+)
+
+# ====================================================================================================
+# ====================================================================================================
+# ====================================================================================================
 
 def print_dict(d, indent=4):
     if not isinstance(d, dict):
@@ -220,6 +235,9 @@ def create_api_content_0(inputtext, bestthutuc):
 # ====================================================================================================
 
 def DVC_SearchAssistant(inputtext, infopool_id):
+    # ----- Log 📄
+    logging.info(f"infopool_id='{infopool_id}' - inputtext='{inputtext}'")
+    # -----
     API_OBJECT = {
         "input": inputtext,
         "datapool": infopool_id,

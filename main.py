@@ -115,15 +115,15 @@ with gr.Blocks(title="DVC_SearchAssistant_V3", theme=theme, css=css, head=head, 
             gr_variable_1 = gr.Code(interactive=False, wrap_lines=True, label="gr_variable_1", elem_id="gr_variable_1")
             gr_var_prompt = gr.Code(interactive=False, wrap_lines=True, label="gr_var_prompt", elem_id="gr_var_prompt")
             gr_infopool = gr.Radio(choices=["DVC_TTHC_LamDong", "DVC_TTHC_LangSon"], elem_id="gr_infopool", value="DVC_TTHC_LamDong", type="value", info="### Nguồn dữ liệu", interactive=True, container=False)
-        with gr.Column(elem_id="gr_mid_column", min_width=900):
+        with gr.Column(elem_id="gr_mid_column", min_width=800):
             gr_history = gr.Chatbot(elem_id="gr_history", type="messages", placeholder="![image](https://raw.githubusercontent.com/baobuiquang/DVC_SearchAssistant_V2/refs/heads/main/static/logo.png)\n## Xin chào!\nMình là chatbot hỗ trợ tìm kiếm thủ tục dịch vụ công.", avatar_images=(None, "https://raw.githubusercontent.com/baobuiquang/DVC_SearchAssistant_V3/refs/heads/main/static/logo.png"), group_consecutive_messages=False, container=False, examples=[
                 {"text": "Hướng dẫn sử dụng", "files": []},
                 {"text": "cach nop ho so", "files": []},
                 {"text": "Hướng dẫn làm thủ tục", "files": []},
                 {"text": "Tra cứu hồ sơ", "files": []},
                 {"text": "sđt đường dây nóng hỗ trợ", "files": []},
-                {"text": "Thành phần hồ sơ thành lập doanh nghiệp tư nhân", "files": []},
                 {"text": "Điều kiện đăng ký kết hôn là gì?", "files": []},
+                {"text": "Thành phần hồ sơ thành lập doanh nghiệp tư nhân", "files": []},
                 {"text": "Thời gian giải quyết phúc khảo bài thi tốt nghiệp là bao lâu?", "files": []},
                 {"text": "can cu phap ly dang ky khai sinh", "files": []},
                 {"text": "Lệ phí thành lập hộ kinh doanh là bao nhiêu?", "files": []},
