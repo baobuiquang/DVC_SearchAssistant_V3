@@ -2,6 +2,7 @@ from pkg.HYSE.HYSE import HYSE_EngineHybrid, json2dict, dict2json
 from pkg.NLPT.NLPT import NLPT_Normalize
 from pkg.LLM.LLM import Process_LLM
 
+from static.DATA_HARDPARAPHRASE import DATA_HARDPARAPHRASE
 from static.DATA_HARDCODE import DATA_HARDCODE
 
 import numpy as np
@@ -257,7 +258,15 @@ def DVC_SearchAssistant(inputtext, infopool_id):
     # -------------------------------------------------- 1️⃣ Special Case 1: inputtext is empty
     if inputtext == "":
         return API_OBJECT
-    # -------------------------------------------------- 2️⃣ Special Case 2: inputtext is DATA_HARDCODE
+    # -------------------------------------------------- 2️⃣ Special Case 2A: inputtext contains DATA_HARDPARAPHRASE
+    for hardparaphrase in DATA_HARDPARAPHRASE:
+        possible_keywords = create_normalied_list_of_text(hardparaphrase["keywords"])
+        for k in possible_keywords:
+            if k.lower() in inputtext.lower():
+                inputtext += " " + hardparaphrase["append_phrase"]
+                print(f"> inputtext: {inputtext}")
+                break
+    # -------------------------------------------------- 2️⃣ Special Case 2B: inputtext is DATA_HARDCODE
     for faq in DATA_HARDCODE[infopool_id]:
         possible_faq_questions = create_normalied_list_of_text(faq["questions"])
         for e in possible_faq_questions:
