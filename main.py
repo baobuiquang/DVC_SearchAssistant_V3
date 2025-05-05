@@ -149,7 +149,7 @@ with gr.Blocks(title="Demo - DVC_SearchAssistant_V3", theme=theme, css=css, head
         with gr.Column(min_width=1):
             gr_variable_1 = gr.Code(interactive=False, wrap_lines=True, label="gr_variable_1", elem_id="gr_variable_1")
             gr_var_prompt = gr.Code(interactive=False, wrap_lines=True, label="gr_var_prompt", elem_id="gr_var_prompt")
-            gr_infopool = gr.Radio(choices=["DVC_TTHC_LamDong", "DVC_TTHC_LangSon"], elem_id="gr_infopool", value="DVC_TTHC_LamDong", type="value", info="### Nguồn dữ liệu", interactive=True, container=False)
+            gr_infopool = gr.Radio(choices=["DVC_TTHC_BoCongAn", "DVC_TTHC_LamDong", "DVC_TTHC_LangSon"], elem_id="gr_infopool", value="DVC_TTHC_LamDong", type="value", info="### Nguồn dữ liệu", interactive=True, container=False)
         with gr.Column(elem_id="gr_mid_column", min_width=800):
             gr_history = gr.Chatbot(elem_id="gr_history", type="messages", placeholder="![image](https://raw.githubusercontent.com/baobuiquang/DVC_SearchAssistant_V2/refs/heads/main/static/logo.png)\n## Xin chào!\nMình là chatbot hỗ trợ tìm kiếm thủ tục dịch vụ công.", avatar_images=(None, "https://raw.githubusercontent.com/baobuiquang/DVC_SearchAssistant_V3/refs/heads/main/static/logo.png"), group_consecutive_messages=False, container=False, examples=[
                 {"text": "Hướng dẫn sử dụng", "files": []},
