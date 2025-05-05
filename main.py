@@ -38,7 +38,7 @@ async def lifespan(app: FastAPI):
 # ====================================================================================================
 # ====================================================================================================
 
-app = FastAPI(lifespan=lifespan)
+app = FastAPI(title="DVC_SearchAssistant_V3", lifespan=lifespan)
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_credentials=True, allow_methods=["*"], allow_headers=["*"])
 
 GLOBAL_AUTHENKEY = "VNPT"
