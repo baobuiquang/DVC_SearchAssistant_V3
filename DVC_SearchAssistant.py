@@ -174,7 +174,7 @@ def create_api_content_0(inputtext, bestthutuc):
         { "fieldnames": ['Đối tượng thực hiện'], "triggers": ['đối tượng thực hiện', 'đối tượng', 'thực hiện'] },
         { "fieldnames": ['Căn cứ pháp lý'], "triggers": ['căn cứ pháp lý', 'căn cứ', 'pháp lý'] },
         { "fieldnames": ['Biểu mẫu đính kèm', 'Tên mẫu đơn, tờ khai'], "triggers": ['biểu mẫu đính kèm', 'tên mẫu đơn, tờ khai', 'biểu mẫu', 'mẫu đơn', 'tờ khai'] },
-        { "fieldnames": ['Phí, lệ phí', 'Lệ Phí', 'Phí'], "triggers": ['phí, lệ phí', 'lệ phí', 'chi phí'] },
+        { "fieldnames": ['Phí, lệ phí', 'Lệ Phí', 'Phí'], "triggers": ['phí, lệ phí', 'lệ phí', 'chi phí', 'bao nhiêu tiền'] },
         { "fieldnames": ['Lĩnh vực'], "triggers": ['lĩnh vực'] },
         { "fieldnames": ['Cơ quan thực hiện'], "triggers": ['cơ quan thực hiện', 'thực hiện'] },
         { "fieldnames": ['Kết quả thực hiện', 'Kết quả'], "triggers": ['kết quả thực hiện', 'kết quả', 'thực hiện'] },
