@@ -65,6 +65,13 @@ async def endpoint_api(playload:SearchAssistantPlayload):
             # --------------------------------------------------
         except Exception as e: return {"message": f"⚠️ Error: {e}"}
 
+# ENDPOINT: /KILL
+@app.get("/kill", include_in_schema=False)
+async def Endpoint_Kill():
+    import os
+    import signal
+    os.kill(os.getpid(), signal.SIGTERM)
+
 # ==================================================================================================== 📱 DEMO APP
 # ====================================================================================================
 # ====================================================================================================
