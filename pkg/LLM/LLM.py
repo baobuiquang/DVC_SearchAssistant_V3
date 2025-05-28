@@ -21,14 +21,16 @@ KEY_VNPT       = "ollama"
 URL_OPENROUTER = "https://openrouter.ai/api/v1/chat/completions"
 URL_DEEPINFRA  = "https://api.deepinfra.com/v1/openai/chat/completions"
 URL_OLLAMA     = "http://localhost:11434/v1/chat/completions"
-URL_VNPT       = "http://192.168.80.99:11434/v1/chat/completions"
+# URL_VNPT       = "http://192.168.80.99:11434/v1/chat/completions"
+URL_VNPT       = "http://localhost:11434/v1/chat/completions"
 MDL_OPENROUTER = "qwen/qwen-2.5-7b-instruct"
 MDL_DEEPINFRA  = "Qwen/Qwen2.5-7B-Instruct"
 MDL_OLLAMA     = "qwen2.5:7b-instruct-q4_K_M"
 # 🍌👇
+MDL_VNPT       = "gemma3:4b"
 # MDL_VNPT       = "gemma3:12b"
 # MDL_VNPT       = "gemma3:12b-it-qat"
-MDL_VNPT       = "mygemma:12b"
+# MDL_VNPT       = "mygemma:12b"
 
 # ====================================================================================================
 # ====================================================================================================
